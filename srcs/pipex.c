@@ -6,13 +6,13 @@
 /*   By: maagosti <maagosti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/01 17:30:12 by maagosti          #+#    #+#             */
-/*   Updated: 2024/05/07 09:42:32 by maagosti         ###   ########.fr       */
+/*   Updated: 2024/05/07 09:54:59 by maagosti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 
-int	exec_cmd(char *cmd, char **env)
+void	exec_cmd(char *cmd, char **env)
 {
 	char	**args;
 	char	*path;
@@ -29,9 +29,8 @@ int	exec_cmd(char *cmd, char **env)
 		ft_putstr_fd("pipex: command not found: ", 2);
 		ft_putendl_fd(args[0], 2);
 		ft_free_tab(args);
-		exit(0);
+		exit(1);
 	}
-	return (0);
 }
 
 void	child(char **av, int *pipe, char **env)
@@ -68,10 +67,10 @@ int	main(int ac, char **av, char **env)
 	if (ac != 5)
 		exit(1);
 	if (pipe(p_fd) == -1)
-		exit(-1);
+		exit(1);
 	pid = fork();
 	if (pid == -1)
-		exit(-1);
+		exit(1);
 	if (!pid)
 		child(av, p_fd, env);
 	parent(av, p_fd, env);
