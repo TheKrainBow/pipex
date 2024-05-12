@@ -6,7 +6,7 @@
 /*   By: maagosti <maagosti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/01 17:30:12 by maagosti          #+#    #+#             */
-/*   Updated: 2024/05/07 09:54:59 by maagosti         ###   ########.fr       */
+/*   Updated: 2024/05/12 07:45:10 by maagosti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ void	parent(char **av, int *pipe, char **env)
 {
 	int		fd;
 
-	fd = open(av[4], O_WRONLY | O_CREAT | O_TRUNC, 0777);
+	fd = open(av[4], O_WRONLY | O_CREAT | O_TRUNC);
 	if (fd == -1)
 		exit(1);
 	dup2(fd, 1);
