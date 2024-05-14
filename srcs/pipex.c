@@ -6,7 +6,7 @@
 /*   By: maagosti <maagosti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/01 17:30:12 by maagosti          #+#    #+#             */
-/*   Updated: 2024/05/12 07:45:10 by maagosti         ###   ########.fr       */
+/*   Updated: 2024/05/14 23:24:46 by maagosti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,11 @@ void	child(char **av, int *pipe, char **env)
 
 	fd = open(av[1], O_RDONLY);
 	if (fd == -1)
+	{
+		ft_putstr_fd("pipex: no such file or directory: ", 2);
+		ft_putendl_fd(av[1], 2);
 		exit(1);
+	}
 	dup2(fd, 0);
 	dup2(pipe[1], 1);
 	close(pipe[0]);
@@ -50,9 +54,13 @@ void	parent(char **av, int *pipe, char **env)
 {
 	int		fd;
 
-	fd = open(av[4], O_WRONLY | O_CREAT | O_TRUNC);
+	fd = open(av[4], O_WRONLY | O_CREAT | O_TRUNC, 0666);
 	if (fd == -1)
+	{
+		ft_putstr_fd("pipex: no such file or directory: ", 2);
+		ft_putendl_fd(av[4], 2);
 		exit(1);
+	}
 	dup2(fd, 1);
 	dup2(pipe[0], 0);
 	close(pipe[1]);
@@ -64,14 +72,22 @@ int	main(int ac, char **av, char **env)
 	int		p_fd[2];
 	pid_t	pid;
 
-	if (ac != 5)
+	if (ac < 5)
+	{
+		ft_putstr_fd("Not enough arguments\n", 2);
 		exit(1);
+	}
+	if (ac > 5)
+	{
+		ft_putstr_fd("Too many arguments\n", 2);
+		exit(1);
+	}
 	if (pipe(p_fd) == -1)
 		exit(1);
 	pid = fork();
 	if (pid == -1)
 		exit(1);
-	if (!pid)
+	if (pid)
 		child(av, p_fd, env);
 	parent(av, p_fd, env);
 }
